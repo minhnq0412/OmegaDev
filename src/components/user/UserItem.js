@@ -1,7 +1,7 @@
 import React from "react";
 import EyeSvg from "../svg/EyeSvg";
 
-const UserItem = ({ user }) => {
+const UserItem = ({ user, handleClickView }) => {
   return (
     <>
       <tr className="border-b">
@@ -11,7 +11,7 @@ const UserItem = ({ user }) => {
         <Field>{user?.userId}</Field>
         <Field>{user?.title}</Field>
         <Field>
-          <EyeSvg />
+          <span onClick={() => handleClickView(user)}><EyeSvg /></span>
         </Field>
       </tr>
     </>

@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Content from "../components/Content";
-import { Loading, ModalBase, DetailUser } from "../components/modal/index";
+import { ModalBase, DetailUser } from "../components/modal/index";
 import UserItem from "../components/user/UserItem";
 import { ManagementField } from "../utils/data/ManagementField";
 import { DataUser } from "../utils/data/UserData";
 
 const PostsManagement = () => {
+  const [isShow, setIsShow] = useState(false)
+  const [userView, setUserView] = useState()
+
+  const handleClickView = (user) => {
+    setIsShow(true);
+    setUserView(user)
+  }
   return (
     <Content content={`Posts Management`}>
       <div className="flex flex-col">
@@ -13,46 +20,35 @@ const PostsManagement = () => {
           <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
             <div className="overflow-hidden">
               <table className="min-w-full">
-                <TableHead />
-                <TableBody />
+                <thead className="border-b">
+                  <tr>
+                    {ManagementField?.map((o) => (
+                      <th
+                        key={o}
+                        scope="col"
+                        className="text-sm font-medium px-6 py-4 text-left text-white"
+                      >
+                        {o}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {DataUser?.map((o) => (
+                    <UserItem user={o} key={o.id} handleClickView={handleClickView} />
+                  ))}
+                </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
-      <ModalBase visible={true}>
-        <DetailUser></DetailUser>
+      <ModalBase visible={isShow} onClose={() => setIsShow(false)}>
+        <DetailUser user={userView} handleClose={() => setIsShow(false)}></DetailUser>
       </ModalBase>
     </Content>
   );
 };
 
-const TableHead = () => {
-  return (
-    <thead className="border-b">
-      <tr>
-        {ManagementField?.map((o) => (
-          <th
-            key={o}
-            scope="col"
-            className="text-sm font-medium px-6 py-4 text-left text-white"
-          >
-            {o}
-          </th>
-        ))}
-      </tr>
-    </thead>
-  );
-};
-
-const TableBody = () => {
-  return (
-    <tbody>
-      {DataUser?.map((o) => (
-        <UserItem user={o} key={o.id} />
-      ))}
-    </tbody>
-  );
-};
 
 export default PostsManagement;
