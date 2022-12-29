@@ -14,7 +14,7 @@ const Sidebar = () => {
             <NavLink
               to={o.path}
               className={({ isActive }) =>
-                isActive ? "text-green-500 underline" : ""
+                isActive ? "text-green-400 font-semibold underline" : ""
               }
             >
               <span>{o.title}</span>

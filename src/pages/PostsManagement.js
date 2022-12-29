@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import Content from "../components/Content";
-import { ModalBase, DetailUser } from "../components/modal/index";
+import { ModalBase, DetailUser, Loading } from "../components/modal/index";
 import UserItem from "../components/user/UserItem";
 import useDebounce from "../hooks/useDebounce";
 import userApi from "../services/api/userApi";
@@ -9,19 +9,19 @@ import { ManagementField } from "../utils/data/ManagementField";
 const itemsPerPage = 5;
 
 const PostsManagement = () => {
-  const [isShow, setIsShow] = useState(false)
-  const [userView, setUserView] = useState()
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [userView, setUserView] = useState();
   const [itemOffset, setItemOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [filter, setFilter] = useState();
   const [users, setUsers] = useState();
   const [usersDisplay, setUsersDisplay] = useState();
-  const filterDebounce = useDebounce(filter, 500);
+  const { debounceValue: filterDebounce, loading } = useDebounce(filter, 500);
 
   const handleClickView = (user) => {
-    setIsShow(true);
-    setUserView(user)
-  }
+    setIsShowModal(true);
+    setUserView(user);
+  };
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % usersDisplay?.length;
     setItemOffset(newOffset);
@@ -33,12 +33,23 @@ const PostsManagement = () => {
   }, [usersDisplay]);
 
   useEffect(() => {
-    userApi.getAllUser().then(res => { setUsers(res); setUsersDisplay(res) }).catch(err => console.log(err))
-  }, [])
+    userApi
+      .getAllUser()
+      .then((res) => {
+        setUsers(res);
+        setUsersDisplay(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
-    setUsersDisplay(users?.filter(o => o.userId === +filterDebounce || o?.title.includes(filterDebounce)))
-  }, [filterDebounce])
+    setUsersDisplay(
+      users?.filter(
+        (o) => o.userId === +filterDebounce || o?.title.includes(filterDebounce)
+      )
+    );
+  }, [filterDebounce]);
+  
   return (
     <Content content={`Posts Management`}>
       <div className="flex flex-col h-full">
@@ -66,10 +77,18 @@ const PostsManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {usersDisplay?.filter((o, i) => i >= itemOffset)?.map((o, i) =>
-                    i < itemsPerPage && (
-                      <UserItem user={o} key={o.id} handleClickView={handleClickView} />
-                    ))}
+                  {usersDisplay
+                    ?.filter((o, i) => i >= itemOffset)
+                    ?.map(
+                      (o, i) =>
+                        i < itemsPerPage && (
+                          <UserItem
+                            user={o}
+                            key={o.id}
+                            handleClickView={handleClickView}
+                          />
+                        )
+                    )}
                 </tbody>
               </table>
             </div>
@@ -90,12 +109,17 @@ const PostsManagement = () => {
           />
         </div>
       </div>
-      <ModalBase visible={isShow} onClose={() => setIsShow(false)}>
-        <DetailUser user={userView} handleClose={() => setIsShow(false)}></DetailUser>
+      <ModalBase visible={isShowModal} onClose={() => setIsShowModal(false)}>
+        <DetailUser
+          user={userView}
+          handleClose={() => setIsShowModal(false)}
+        ></DetailUser>
+      </ModalBase>
+      <ModalBase visible={loading}>
+        <Loading />
       </ModalBase>
     </Content>
   );
 };
-
 
 export default PostsManagement;
