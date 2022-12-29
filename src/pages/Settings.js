@@ -22,7 +22,7 @@ const Settings = () => {
   const onSubmitHandler = (values) => {
     console.log(values);
   };
-
+console.log(control)
   return (
     <Content content={`Settings`}>
       <form
@@ -47,15 +47,19 @@ const Settings = () => {
           name="Email"
           error={errors?.Email}
         ></InputForm>
-        <InputForm
+        {/* <InputForm
           label={`Background Color`}
           classLabel={`text-white`}
           control={control}
           name="Bg"
           error={errors?.Bg}
-          //type={`color`}
-        ></InputForm>
-        <InputColor />
+          type={`color`}
+        ></InputForm> */}
+        <InputColor
+          name="Bg"
+          setValue={setValue}
+          error={errors?.Bg}
+        />
 
         <DropDownDatePicker
           label={`Active Date`}
@@ -64,7 +68,7 @@ const Settings = () => {
           name="ActiveDate"
           setValue={setValue}
         />
-        <Button hidden={true}>Submit</Button>
+        <Button hidden={false}>Submit</Button>
       </form>
     </Content>
   );
