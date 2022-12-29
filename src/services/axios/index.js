@@ -2,11 +2,11 @@ import axios from "axios";
 import queryString from "query-string";
 
 const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL: "",
   headers: {
     "content-type": "application/json",
   },
-  paramsSerializer: (params) => queryString.stringify(params),
+  //paramsSerializer: (params) => queryString.stringify(params),
 });
 
 apiClient.interceptors.request.use(async (config) => {
