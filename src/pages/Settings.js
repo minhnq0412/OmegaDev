@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Content from "../components/Content";
+import { Content } from "../components/index";
 import { ValidSetting } from "../utils/validation/ValidSetting";
-import InputForm from "../components/InputForm";
-import Button from "../elements/Button";
-// import InputColor from "../components/InputColor";
-import DropDownDatePicker from "../components/DropDownDatePicker";
-import InputColor from "../elements/input/InputColor";
-
+import { InputColor, InputForm } from "../elements/input/index";
+import DropDownDatePicker from "../elements/dropdown/DropDownDatePicker";
+import Button from "../elements/button/Button";
+import { useAppContext } from "../services/context/AppContext";
 const Settings = () => {
+  const { state, dispatch } = useAppContext();
+
   const {
     setValue,
     handleSubmit,
@@ -17,58 +17,58 @@ const Settings = () => {
     control,
   } = useForm({
     resolver: yupResolver(ValidSetting),
+    defaultValues: useMemo(() => ({ ...state?.settings }), [state?.settings]),
     reValidateMode: "onChange",
   });
+
   const onSubmitHandler = (values) => {
-    console.log(values);
+    console.log(values)
+    dispatch({
+      type: "SAVE_SETTING",
+      payload: values,
+    });
   };
-console.log(control)
   return (
     <Content content={`Settings`}>
       <form
-        className="grid grid-cols-2 gap-5 my-5"
         autoComplete="off"
         onSubmit={handleSubmit(onSubmitHandler)}
         onKeyDown={(e) => {
           if (e.code === "Enter") e.preventDefault();
         }}
       >
-        <InputForm
-          label={`Title`}
-          classLabel={`text-white`}
-          control={control}
-          name="Title"
-          error={errors?.Title}
-        ></InputForm>
-        <InputForm
-          label={`Email`}
-          classLabel={`text-white`}
-          control={control}
-          name="Email"
-          error={errors?.Email}
-        ></InputForm>
-        {/* <InputForm
-          label={`Background Color`}
-          classLabel={`text-white`}
-          control={control}
-          name="Bg"
-          error={errors?.Bg}
-          type={`color`}
-        ></InputForm> */}
-        <InputColor
-          name="Bg"
-          setValue={setValue}
-          error={errors?.Bg}
-        />
-
-        <DropDownDatePicker
-          label={`Active Date`}
-          properties={"flex-1 max-h-[46px]"}
-          control={control}
-          name="ActiveDate"
-          setValue={setValue}
-        />
-        <Button hidden={false}>Submit</Button>
+        <div className="grid grid-cols-2 gap-x-10 my-5">
+          <InputForm
+            label={`Title`}
+            classLabel={`text-white`}
+            control={control}
+            name="Title"
+            error={errors?.Title}
+          />
+          <InputForm
+            label={`Email`}
+            classLabel={`text-white`}
+            control={control}
+            name="Email"
+            error={errors?.Email}
+          />
+          <InputColor
+            name="Bg"
+            setValue={setValue}
+            error={errors?.Bg}
+            defaultValue={state?.settings?.Bg}
+          />
+          <DropDownDatePicker
+            label={`Active Date`}
+            control={control}
+            name="ActiveDate"
+            setValue={setValue}
+            defaultValue={state?.settings?.ActiveDate}
+          />
+        </div>
+        <div className="text-center mt-10">
+          <Button hidden={false}>Submit</Button>
+        </div>
       </form>
     </Content>
   );

@@ -1,6 +1,7 @@
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import Main from "./components/Main";
+import { Loading, ModalBase } from "./components/modal/index";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const PostsManagement = lazy(() => import("./pages/PostsManagement"));
@@ -11,7 +12,13 @@ const Revenue = lazy(() => import("./components/dashboard/Revenue"));
 function App() {
   return (
     <Fragment>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <ModalBase visible={true}>
+            <Loading />
+          </ModalBase>
+        }
+      >
         <Routes>
           <Route element={<Main />}>
             <Route path="/">

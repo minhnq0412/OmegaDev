@@ -1,9 +1,10 @@
 import React from "react";
-import LineChart from "../../elements/LineChart";
-import { dataLineChart } from "../../utils/data/ChartData";
+import { LineChart } from "../../elements/chart/index";
+import { useAppContext } from "../../services/context/AppContext";
 
 const Subcription = () => {
-  return <LineChart data={dataLineChart}></LineChart>;
+  const { state, dispatch } = useAppContext();
+  return <LineChart data={state?.dashboard?.dataChart}></LineChart>;
 };
 
 export default Subcription;

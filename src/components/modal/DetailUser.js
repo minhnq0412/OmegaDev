@@ -1,6 +1,6 @@
 import React from "react";
-import Input from "../Input";
-import Textarea from "../Textarea";
+import Input from "../../elements/input/Input";
+import Textarea from "../../elements/input/Textarea";
 
 const DetailUser = ({ user, handleClose = () => {} }) => {
   return (

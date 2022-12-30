@@ -8,7 +8,7 @@ const labelsLineChart = [
   "Sunday",
 ];
 
-export const dataLineChart = {
+export const dataChart = {
   labels: labelsLineChart,
   datasets: [
     {

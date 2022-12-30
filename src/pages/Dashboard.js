@@ -1,11 +1,10 @@
 import React from "react";
-import Content from "../components/Content";
-import Button from "../elements/Button";
+import Button from "../elements/button/Button";
 import { Outlet, useNavigate } from "react-router-dom";
+import { Content } from "../components/index";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-
   return (
     <Content content={`Dashboard`}>
       <div className="flex my-5">

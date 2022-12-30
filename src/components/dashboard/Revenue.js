@@ -1,9 +1,10 @@
 import React from "react";
-import BarChart from "../../elements/BarChart";
-import { dataLineChart } from "../../utils/data/ChartData";
+import { BarChart } from "../../elements/chart/index";
+import { useAppContext } from "../../services/context/AppContext";
 
 const Revenue = () => {
-  return <BarChart data={dataLineChart}></BarChart>;
+  const { state, dispatch } = useAppContext();
+  return <BarChart data={state?.dashboard?.dataChart}></BarChart>;
 };
 
 export default Revenue;

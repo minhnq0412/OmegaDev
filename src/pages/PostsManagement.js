@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
-import Content from "../components/Content";
+import {Content} from "../components/index";
 import { ModalBase, DetailUser, Loading } from "../components/modal/index";
 import UserItem from "../components/user/UserItem";
 import useDebounce from "../hooks/useDebounce";
