@@ -1,7 +1,8 @@
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Main from "./components/Main";
+import { Main, Fallback } from "./components/index";
 import { Loading, ModalBase } from "./components/modal/index";
+import { withErrorBoundary } from "react-error-boundary";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const PostsManagement = lazy(() => import("./pages/PostsManagement"));
@@ -30,10 +31,11 @@ function App() {
             <Route path="/postsmanagement" element={<PostsManagement />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
+          <Route path="*" element={<Fallback/>}></Route>
         </Routes>
       </Suspense>
     </Fragment>
   );
 }
 
-export default App;
+export default withErrorBoundary(App, { Fallback });

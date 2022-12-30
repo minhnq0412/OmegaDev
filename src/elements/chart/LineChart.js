@@ -10,7 +10,7 @@ const LineChart = ({ data }) => {
       },
     },
   };
-  return <Line data={data} options={options} />;
+  return <Line className="max-h-[70%]" data={data} options={options} />;
 };
 
 export default LineChart;
